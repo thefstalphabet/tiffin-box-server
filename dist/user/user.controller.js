@@ -23,6 +23,14 @@ let UserController = class UserController {
     create(createUserDto) {
         return this.userService.create(createUserDto);
     }
+    find(query) {
+        if (!(query === null || query === void 0 ? void 0 : query._id)) {
+            throw new common_1.BadRequestException({
+                message: `User id is required.`
+            });
+        }
+        return this.userService.find(query === null || query === void 0 ? void 0 : query._id);
+    }
 };
 __decorate([
     (0, common_1.Post)(),
@@ -31,6 +39,13 @@ __decorate([
     __metadata("design:paramtypes", [user_dto_1.CreateUserDto]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "create", null);
+__decorate([
+    (0, common_1.Get)(),
+    __param(0, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "find", null);
 UserController = __decorate([
     (0, common_1.Controller)("user"),
     __metadata("design:paramtypes", [user_service_1.UserService])

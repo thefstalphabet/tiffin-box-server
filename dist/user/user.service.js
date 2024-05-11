@@ -14,25 +14,37 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 const common_1 = require("@nestjs/common");
-const user_entity_1 = require("./entities/user.entity");
-const uuid_1 = require("uuid");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
+const uuid_1 = require("uuid");
+const user_entity_1 = require("./entities/user.entity");
 let UserService = class UserService {
     constructor(userRepository) {
         this.userRepository = userRepository;
     }
     async create(createUserDto) {
-        const payload = Object.assign({ _id: (0, uuid_1.v4)(), active: true }, createUserDto);
         try {
-            const createdUser = await this.userRepository.save(payload);
-            return createdUser;
+            const existingUser = await this.userRepository.findOne({ where: { email: createUserDto.email } });
+            if (existingUser) {
+                throw new common_1.BadRequestException('User with this email already exists.');
+            }
+            const user = this.userRepository.create(Object.assign({ _id: (0, uuid_1.v4)(), active: true }, createUserDto));
+            return await this.userRepository.save(user);
         }
         catch (error) {
-            throw new common_1.BadRequestException({
-                error: error,
-                message: `Something went wrong!`
-            });
+            throw new common_1.BadRequestException('Could not create user.', error.message);
+        }
+    }
+    async find(_id) {
+        try {
+            const user = await this.userRepository.findOne({ where: { _id } });
+            if (!user) {
+                throw new common_1.BadRequestException('User not found.');
+            }
+            return user;
+        }
+        catch (error) {
+            throw new common_1.BadRequestException('Could not find user.', error.message);
         }
     }
 };
