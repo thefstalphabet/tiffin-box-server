@@ -35,9 +35,14 @@ let UserService = class UserService {
             throw new common_1.BadRequestException('Could not create user.', error.message);
         }
     }
-    async find(_id) {
+    async find(_id, email) {
         try {
-            const user = await this.userRepository.findOne({ where: { _id } });
+            let query = {};
+            if (_id)
+                query["_id"] = _id;
+            if (email)
+                query["email"] = email;
+            const user = await this.userRepository.findOne({ where: query });
             if (!user) {
                 throw new common_1.BadRequestException('User not found.');
             }

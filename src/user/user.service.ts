@@ -31,9 +31,12 @@ export class UserService {
     }
   }
 
-  async find(_id: string): Promise<User> {
+  async find(_id: string, email?: string): Promise<User> {
     try {
-      const user = await this.userRepository.findOne({ where: { _id } });
+      let query = {}
+      if (_id) query["_id"] = _id
+      if (email) query["email"] = email
+      const user = await this.userRepository.findOne({ where: query });
       if (!user) {
         throw new BadRequestException('User not found.');
       }

@@ -1,8 +1,9 @@
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
+import { envConfig } from "./envConfig";
 
 export const ormConfig: TypeOrmModuleOptions = {
     type: "mongodb",
-    url: process.env.DB_CONNECTION_STRING,
+    url: envConfig.dbConnectionString,
     useUnifiedTopology: true,
     entities: ["dist/**/*.entity{.ts,.js}"]
 }
