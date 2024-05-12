@@ -24,6 +24,16 @@ let AuthController = class AuthController {
         const user = await this.authService.validateUser(loginDto);
         return this.authService.login(user);
     }
+    async refreshToken(refreshTokenDto) {
+        try {
+            const { refreshToken } = refreshTokenDto;
+            const newAccessToken = await this.authService.refreshAccessToken(refreshToken);
+            return { accessToken: newAccessToken };
+        }
+        catch (error) {
+            throw new common_1.HttpException('Invalid refresh token', common_1.HttpStatus.UNAUTHORIZED);
+        }
+    }
 };
 __decorate([
     (0, common_1.Post)("login"),
@@ -32,6 +42,13 @@ __decorate([
     __metadata("design:paramtypes", [auth_dto_1.LoginDto]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "login", null);
+__decorate([
+    (0, common_1.Post)('/refresh-token'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [auth_dto_1.RefreshTokenDto]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "refreshToken", null);
 AuthController = __decorate([
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])

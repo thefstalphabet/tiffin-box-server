@@ -10,6 +10,14 @@ export declare class AuthService {
         _id: string;
     }>;
     login(user: any): Promise<{
-        access_token: string;
+        accessToken: string;
+        refreshToken: string;
     }>;
+    refreshAccessToken(refreshToken: string): Promise<string>;
+    createToken(payload: {
+        email: string;
+        sub: string;
+    }, signOptions?: {
+        expiresIn: string;
+    }): Promise<string>;
 }

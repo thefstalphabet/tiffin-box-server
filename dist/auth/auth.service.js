@@ -29,8 +29,25 @@ let AuthService = class AuthService {
     async login(user) {
         const payload = { email: user.email, sub: user._id };
         return {
-            access_token: this.jwtService.sign(payload),
+            accessToken: await this.createToken(payload),
+            refreshToken: await this.createToken(payload, { expiresIn: '15m' })
         };
+    }
+    async refreshAccessToken(refreshToken) {
+        const decoded = this.jwtService.decode(refreshToken);
+        if (!decoded) {
+            throw new Error('Invalid token');
+        }
+        const { email, sub } = decoded;
+        const user = await this.userService.find(undefined, email);
+        if (!user) {
+            throw new Error('User not found');
+        }
+        const payload = { email: user.email, sub: user._id };
+        return await this.createToken(payload);
+    }
+    async createToken(payload, signOptions) {
+        return this.jwtService.sign(payload);
     }
 };
 AuthService = __decorate([

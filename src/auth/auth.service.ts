@@ -24,7 +24,26 @@ export class AuthService {
   async login(user: any) {
     const payload = { email: user.email, sub: user._id };
     return {
-      access_token: this.jwtService.sign(payload),
+      accessToken: await this.createToken(payload),
+      refreshToken: await this.createToken(payload, { expiresIn: '15m' })
     }
+  }
+
+  async refreshAccessToken(refreshToken: string) {
+    const decoded = this.jwtService.decode(refreshToken);
+    if (!decoded) {
+      throw new Error('Invalid token');
+    }
+    const { email, sub } = decoded as { email: string; sub: string };
+    const user = await this.userService.find(undefined, email);
+    if (!user) {
+      throw new Error('User not found');
+    }
+    const payload = { email: user.email, sub: user._id };
+    return await this.createToken(payload);
+  }
+
+  async createToken(payload: { email: string, sub: string }, signOptions?: { expiresIn: string }) {
+    return this.jwtService.sign(payload);
   }
 }

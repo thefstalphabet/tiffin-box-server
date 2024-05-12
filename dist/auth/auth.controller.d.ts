@@ -1,9 +1,13 @@
 import { AuthService } from './auth.service';
-import { LoginDto } from './dto/auth.dto';
+import { LoginDto, RefreshTokenDto } from './dto/auth.dto';
 export declare class AuthController {
     private readonly authService;
     constructor(authService: AuthService);
     login(loginDto: LoginDto): Promise<{
-        access_token: string;
+        accessToken: string;
+        refreshToken: string;
+    }>;
+    refreshToken(refreshTokenDto: RefreshTokenDto): Promise<{
+        accessToken: string;
     }>;
 }
