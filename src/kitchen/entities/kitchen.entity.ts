@@ -1,7 +1,7 @@
 import { Entity, Column, ObjectIdColumn } from 'typeorm';
 
 @Entity()
-export class User {
+export class Kitchen {
     @ObjectIdColumn()
     _id: string;
 
@@ -15,10 +15,7 @@ export class User {
     name: string;
 
     @Column()
-    avatar: string;
-
-    @Column()
-    dateOfBirth: Date
+    rating: number
 
     @Column({ nullable: false })
     phoneNumber: string;
@@ -29,6 +26,18 @@ export class User {
     @Column({ nullable: false })
     address: string;
 
-    @Column()
+    @Column({ nullable: false })
+    vegan: boolean
+
+    @Column({ nullable: false })
     active: boolean
+
+    @Column({ nullable: false })
+    minOrderPrice: number
+
+    @Column({ nullable: false })
+    openingTime: string
+
+    @Column({ nullable: false })
+    closingTime: string
 }

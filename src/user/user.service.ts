@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import { User } from './entities/user.entity'; // Assuming you have a User entity
 import { CreateUserDto } from './dto/user.dto'; // Assuming you have a CreateUserDto
+import { idGenerator } from 'src/helper/idGenerator';
 
 @Injectable()
 export class UserService {
@@ -20,7 +21,7 @@ export class UserService {
       }
 
       const user = this.userRepository.create({
-        _id: uuidv4(),
+        _id: idGenerator("USE"),
         active: true,
         ...createUserDto,
       });
@@ -31,10 +32,15 @@ export class UserService {
     }
   }
 
-  async find(_id: string, email?: string): Promise<User> {
+  async findAll(): Promise<User[]> {
+    const [users, count] = await this.userRepository.findAndCount();
+    return users
+  }
+
+  async findOne(id: string, email?: string): Promise<User> {
     try {
       let query = {}
-      if (_id) query["_id"] = _id
+      if (id) query["_id"] = id
       if (email) query["email"] = email
       const user = await this.userRepository.findOne({ where: query });
       if (!user) {

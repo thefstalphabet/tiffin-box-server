@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/user.dto';
 import { User } from './entities/user.entity';
@@ -13,12 +13,17 @@ export class UserController {
   }
 
   @Get()
-  find(@Query() query: any): Promise<User> {
-    if (!query?._id) {
+  findAll(): Promise<User[]> {
+    return this.userService.findAll();
+  }
+
+  @Get(":id")
+  findOne(@Param('id') id: string): Promise<User> {
+    if (!id) {
       throw new BadRequestException({
         message: `User id is required.`
       })
     }
-    return this.userService.find(query?._id);
+    return this.userService.findOne(id);
   }
 }

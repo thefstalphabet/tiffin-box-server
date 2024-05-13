@@ -20,7 +20,7 @@ let AuthService = class AuthService {
     }
     async validateUser(loginDto) {
         const { email, password } = loginDto;
-        const user = await this.userService.find(undefined, email);
+        const user = await this.userService.findOne(undefined, email);
         if (user && user.password === password) {
             return { email: user.email, _id: user._id };
         }
@@ -39,7 +39,7 @@ let AuthService = class AuthService {
             throw new Error('Invalid token');
         }
         const { email, sub } = decoded;
-        const user = await this.userService.find(undefined, email);
+        const user = await this.userService.findOne(undefined, email);
         if (!user) {
             throw new Error('User not found');
         }

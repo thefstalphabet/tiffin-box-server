@@ -14,6 +14,7 @@ const core_1 = require("@nestjs/core");
 const typeorm_1 = require("@nestjs/typeorm");
 const ormConfig_1 = require("./config/ormConfig");
 const auth_module_1 = require("./auth/auth.module");
+const kitchen_module_1 = require("./kitchen/kitchen.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -21,7 +22,8 @@ AppModule = __decorate([
         imports: [
             typeorm_1.TypeOrmModule.forRoot(ormConfig_1.ormConfig),
             user_module_1.UserModule,
-            auth_module_1.AuthModule
+            auth_module_1.AuthModule,
+            kitchen_module_1.KitchenModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [{
