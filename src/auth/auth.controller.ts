@@ -1,4 +1,4 @@
-import { Body, Controller, HttpException, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto, RefreshTokenDto } from './dto/auth.dto';
 
@@ -6,13 +6,13 @@ import { LoginDto, RefreshTokenDto } from './dto/auth.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) { }
 
-  @Post("login")
-  async login(@Body() loginDto: LoginDto) {
-    const user = await this.authService.validateUser(loginDto);
-    return this.authService.login(user);
+  @Post("login/:type")
+  async Userlogin(@Body() loginDto: LoginDto, @Param('type') type: "user" | "kitchen") {
+    const loginPerson = await this.authService.validateUser(loginDto, type);
+    return this.authService.login(loginPerson);
   }
 
-  @Post('/refresh-token')
+  @Post('refresh-token')
   async refreshToken(@Body() refreshTokenDto: RefreshTokenDto) {
     try {
       const { refreshToken } = refreshTokenDto;

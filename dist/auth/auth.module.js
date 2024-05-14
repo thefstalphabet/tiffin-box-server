@@ -15,13 +15,15 @@ const user_entity_1 = require("../user/entities/user.entity");
 const typeorm_1 = require("@nestjs/typeorm");
 const jwt_1 = require("@nestjs/jwt");
 const jwtConfig_1 = require("../config/jwtConfig");
+const kitchen_service_1 = require("../kitchen/kitchen.service");
+const kitchen_entity_1 = require("../kitchen/entities/kitchen.entity");
 let AuthModule = class AuthModule {
 };
 AuthModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([user_entity_1.User]), jwt_1.JwtModule.register(jwtConfig_1.jwtConfig),],
+        imports: [typeorm_1.TypeOrmModule.forFeature([user_entity_1.User, kitchen_entity_1.Kitchen]), jwt_1.JwtModule.register(jwtConfig_1.jwtConfig),],
         controllers: [auth_controller_1.AuthController],
-        providers: [auth_service_1.AuthService, user_service_1.UserService]
+        providers: [auth_service_1.AuthService, user_service_1.UserService, kitchen_service_1.KitchenService]
     })
 ], AuthModule);
 exports.AuthModule = AuthModule;

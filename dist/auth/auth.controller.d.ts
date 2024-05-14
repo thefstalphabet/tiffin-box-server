@@ -3,7 +3,7 @@ import { LoginDto, RefreshTokenDto } from './dto/auth.dto';
 export declare class AuthController {
     private readonly authService;
     constructor(authService: AuthService);
-    login(loginDto: LoginDto): Promise<{
+    Userlogin(loginDto: LoginDto, type: "user" | "kitchen"): Promise<{
         accessToken: string;
         refreshToken: string;
     }>;

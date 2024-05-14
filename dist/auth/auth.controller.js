@@ -20,9 +20,9 @@ let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
     }
-    async login(loginDto) {
-        const user = await this.authService.validateUser(loginDto);
-        return this.authService.login(user);
+    async Userlogin(loginDto, type) {
+        const loginPerson = await this.authService.validateUser(loginDto, type);
+        return this.authService.login(loginPerson);
     }
     async refreshToken(refreshTokenDto) {
         try {
@@ -36,14 +36,15 @@ let AuthController = class AuthController {
     }
 };
 __decorate([
-    (0, common_1.Post)("login"),
+    (0, common_1.Post)("login/:type"),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Param)('type')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [auth_dto_1.LoginDto]),
+    __metadata("design:paramtypes", [auth_dto_1.LoginDto, String]),
     __metadata("design:returntype", Promise)
-], AuthController.prototype, "login", null);
+], AuthController.prototype, "Userlogin", null);
 __decorate([
-    (0, common_1.Post)('/refresh-token'),
+    (0, common_1.Post)('refresh-token'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [auth_dto_1.RefreshTokenDto]),
