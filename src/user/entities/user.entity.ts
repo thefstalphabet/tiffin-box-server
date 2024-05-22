@@ -20,13 +20,10 @@ export class User {
     @Column()
     dateOfBirth: Date
 
-    @Column({ nullable: false })
     phoneNumber: string;
 
-    @Column({ nullable: false })
     city: string;
 
-    @Column({ nullable: false })
     address: string;
 
     @Column()

@@ -1,1 +1,0 @@
-{"version":3,"file":"ormConfig.js","sourceRoot":"","sources":["../../src/config/ormConfig.ts"],"names":[],"mappings":";;;AACA,2CAAwC;AAE3B,QAAA,SAAS,GAAyB;IAC3C,IAAI,EAAE,SAAS;IACf,GAAG,EAAE,qBAAS,CAAC,kBAAkB;IACjC,kBAAkB,EAAE,IAAI;IACxB,QAAQ,EAAE,CAAC,2BAA2B,CAAC;CAC1C,CAAA"}

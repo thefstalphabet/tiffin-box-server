@@ -13,12 +13,9 @@ export class CreateUserDto {
 
     readonly dateOfBirth: Date;
 
-    @IsNotEmpty()
     readonly phoneNumber: string
 
-    @IsNotEmpty()
     readonly city: string
 
-    @IsNotEmpty()
     readonly address: string
 }
