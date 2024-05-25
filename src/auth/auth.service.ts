@@ -32,8 +32,8 @@ export class AuthService {
   async login(loginPersonData: any) {
     const payload = { email: loginPersonData.email, sub: loginPersonData._id };
     return {
-      accessToken: await this.createToken(payload),
-      refreshToken: await this.createToken(payload, { expiresIn: '15m' })
+      accessToken: await this.createToken(payload, { expiresIn: '15m' }),
+      refreshToken: await this.createToken(payload, { expiresIn: '5d' })
     }
   }
 
