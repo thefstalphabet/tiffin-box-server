@@ -32,10 +32,10 @@ export class CreateKitchenDto {
     // readonly dishes: any
 
     @IsNotEmpty()
-    readonly openingTime: string
+    readonly openingTime: Date
 
     @IsNotEmpty()
-    readonly closingTime: string
+    readonly closingTime: Date
 
 }
 

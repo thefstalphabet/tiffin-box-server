@@ -35,9 +35,9 @@ export class Kitchen {
     @Column({ nullable: false })
     minOrderPrice: number
 
-    @Column({ nullable: false })
-    openingTime: string
+    @Column({ nullable: false, type: "time" })
+    openingTime: Date
 
     @Column({ nullable: false })
-    closingTime: string
+    closingTime: Date
 }
