@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Kitchen } from './entities/kitchen.entity';
 import { idGenerator } from 'src/helper/idGenerator';
+import { regexGenerator } from 'src/helper/regexGenerator';
 
 @Injectable()
 export class KitchenService {
@@ -32,8 +33,9 @@ export class KitchenService {
     }
   }
 
-  async findAll(): Promise<Kitchen[]> {
-    const [kitchens, count] = await this.kitchenRepository.findAndCount();
+  async findAll(query: any): Promise<Kitchen[]> {
+    const newQuery = regexGenerator(query)
+    const kitchens = await this.kitchenRepository.find({ where: newQuery },);
     return kitchens
   }
 

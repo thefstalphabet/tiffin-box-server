@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, BadRequestException, Query } from '@nestjs/common';
 import { KitchenService } from './kitchen.service';
 import { CreateKitchenDto, UpdateKitchenDto } from './dto/kitchen.dto';
 import { Kitchen } from './entities/kitchen.entity';
@@ -13,8 +13,8 @@ export class KitchenController {
   }
 
   @Get()
-  findAll(): Promise<Kitchen[]> {
-    return this.kitchenService.findAll();
+  findAll(@Query() query): Promise<Kitchen[]> {
+    return this.kitchenService.findAll(query);
   }
 
   @Get(":id")
