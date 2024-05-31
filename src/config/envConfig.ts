@@ -4,5 +4,6 @@ dotenv.config();
 export const envConfig = {
     port: process.env.PORT,
     dbConnectionString: process.env.DB_CONNECTION_STRING,
-    jwtSecret: process.env.JWT_SECRET
+    jwtSecret: process.env.JWT_SECRET,
+    isDev: process.env.IS_DEV
 }

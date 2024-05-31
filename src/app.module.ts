@@ -16,7 +16,7 @@ import { envConfig } from './config/envConfig';
       entities: ['dist/**/*.entity{.ts,.js}'],
       synchronize: true,  // Optional
       useNewUrlParser: true  // Optional
-  }),
+    }),
     UserModule,
     AuthModule,
     KitchenModule
