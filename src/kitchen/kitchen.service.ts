@@ -54,7 +54,29 @@ export class KitchenService {
     }
   }
 
-  update(id: number, updateKitchenDto: UpdateKitchenDto) {
-    return `This action updates a #${id} kitchen`;
+  async update(id: string, updateKitchenDto: UpdateKitchenDto): Promise<boolean> {
+    try {
+      const existingKitchen = await this.kitchenRepository.findOne({ where: { _id: id } });
+      if (!existingKitchen) {
+        throw new BadRequestException('Kitchen not found.');
+      }
+      await this.kitchenRepository.update({ _id: id }, updateKitchenDto)
+      return true
+    } catch (error) {
+      throw new BadRequestException('Could not find kitchen.', error.message);
+    }
+  }
+
+  async delete(id: string): Promise<boolean> {
+    try {
+      const existingKitchen = await this.kitchenRepository.findOne({ where: { _id: id } });
+      if (!existingKitchen) {
+        throw new BadRequestException('Kitchen not found.');
+      }
+      await this.kitchenRepository.delete({ _id: id });
+      return true
+    } catch (error) {
+      throw new BadRequestException('Could not find kitchen.', error.message);
+    }
   }
 }

@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import { User } from './entities/user.entity'; // Assuming you have a User entity
-import { CreateUserDto } from './dto/user.dto'; // Assuming you have a CreateUserDto
+import { CreateUserDto, UpdateUserDto } from './dto/user.dto'; // Assuming you have a CreateUserDto
 import { idGenerator } from 'src/helper/idGenerator';
 
 @Injectable()
@@ -49,6 +49,32 @@ export class UserService {
       return user;
     } catch (error) {
       throw new BadRequestException('Could not find user.', error.message);
+    }
+  }
+
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<boolean> {
+    try {
+      const existingUser = await this.userRepository.findOne({ where: { _id: id } });
+      if (!existingUser) {
+        throw new BadRequestException('User not found.');
+      }
+      await this.userRepository.update({ _id: id }, updateUserDto)
+      return true
+    } catch (error) {
+      throw new BadRequestException('Could not find user.', error.message);
+    }
+  }
+
+  async delete(id: string): Promise<boolean> {
+    try {
+      const existingUser = await this.userRepository.findOne({ where: { _id: id } });
+      if (!existingUser) {
+        throw new BadRequestException('User not found.');
+      }
+      await this.userRepository.delete({ _id: id });
+      return true
+    } catch (error) {
+      throw new BadRequestException('Could not find User.', error.message);
     }
   }
 }

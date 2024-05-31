@@ -19,3 +19,19 @@ export class CreateUserDto {
 
     readonly address: string
 }
+
+export class UpdateUserDto {
+    @IsEmail()
+    @IsNotEmpty()
+    readonly email: string;
+
+    readonly name: string;
+
+    readonly dateOfBirth: Date;
+
+    readonly phoneNumber: string
+
+    readonly city: string
+
+    readonly address: string
+}

@@ -1,6 +1,6 @@
-import { BadRequestException, Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/user.dto';
+import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
 import { User } from './entities/user.entity';
 
 @Controller("user")
@@ -25,5 +25,15 @@ export class UserController {
       })
     }
     return this.userService.findOne(id);
+  }
+
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): Promise<boolean>  {
+    return this.userService.update(id, updateUserDto);
+  }
+
+  @Delete(':id')
+  delete(@Param('id') id: string): Promise<boolean> {
+    return this.userService.delete(id);
   }
 }

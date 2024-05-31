@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, BadRequestException, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, BadRequestException, Query, Delete } from '@nestjs/common';
 import { KitchenService } from './kitchen.service';
 import { CreateKitchenDto, UpdateKitchenDto } from './dto/kitchen.dto';
 import { Kitchen } from './entities/kitchen.entity';
@@ -28,7 +28,12 @@ export class KitchenController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateKitchenDto: UpdateKitchenDto) {
-    return this.kitchenService.update(+id, updateKitchenDto);
+  update(@Param('id') id: string, @Body() updateKitchenDto: UpdateKitchenDto): Promise<boolean>  {
+    return this.kitchenService.update(id, updateKitchenDto);
+  }
+
+  @Delete(':id')
+  delete(@Param('id') id: string): Promise<boolean> {
+    return this.kitchenService.delete(id);
   }
 }

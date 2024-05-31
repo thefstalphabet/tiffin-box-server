@@ -40,4 +40,28 @@ export class CreateKitchenDto {
 }
 
 export class UpdateKitchenDto {
+    @IsEmail()
+    @IsNotEmpty()
+    readonly email: string;
+
+    readonly name: string;
+
+    readonly phoneNumber: string
+
+    readonly city: string
+
+    readonly address: string
+
+    readonly vegan: boolean
+
+    readonly minOrderPrice: number
+
+    // readonly review: any
+
+    // @IsNotEmpty()
+    // readonly dishes: any
+
+    readonly openingTime: Date
+
+    readonly closingTime: Date
 }
