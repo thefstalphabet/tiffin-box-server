@@ -6,10 +6,18 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ormConfig } from './config/ormConfig';
 import { AuthModule } from './auth/auth.module';
 import { KitchenModule } from './kitchen/kitchen.module';
+import { envConfig } from './config/envConfig';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot(ormConfig),
+    TypeOrmModule.forRoot({
+      type: 'mongodb',
+      url: envConfig.dbConnectionString,
+      useUnifiedTopology: true,
+      entities: ['dist/**/*.entity{.ts,.js}'],
+      synchronize: true,  // Optional
+      useNewUrlParser: true  // Optional
+  }),
     UserModule,
     AuthModule,
     KitchenModule
