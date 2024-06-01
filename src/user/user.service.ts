@@ -19,12 +19,12 @@ export class UserService {
       if (existingUser) {
         throw new BadRequestException('User with this email already exists.');
       }
-
-      const user = this.userRepository.create({
+      const payload = {
         _id: idGenerator("USE"),
         active: true,
         ...createUserDto,
-      });
+      }
+      const user = this.userRepository.create(payload);
 
       return await this.userRepository.save(user);
     } catch (error) {

@@ -15,15 +15,15 @@ export class User {
     name: string;
 
     @Column()
-    avatar: string;
-
-    @Column()
     dateOfBirth: Date
 
+    @Column()
     phoneNumber: string;
-
+    
+    @Column()
     city: string;
 
+    @Column()
     address: string;
 
     @Column()
