@@ -32,8 +32,8 @@ export class AuthService {
   async login(loginPersonData: any) {
     const payload = { email: loginPersonData.email, sub: loginPersonData._id };
     return {
-      accessToken: await this.createToken(payload, { expiresIn: '15m' }),
-      refreshToken: await this.createToken(payload, { expiresIn: '5d' })
+      accessToken: await this.generateToken(payload, { expiresIn: '15m' }),
+      refreshToken: await this.generateToken(payload, { expiresIn: '5d' })
     }
   }
 
@@ -48,10 +48,18 @@ export class AuthService {
       throw new Error('User not found');
     }
     const payload = { email: user.email, sub: user._id };
-    return await this.createToken(payload);
+    return await this.generateToken(payload);
   }
 
-  async createToken(payload: { email: string, sub: string }, signOptions?: { expiresIn: string }) {
+  async generateToken(payload: { email: string, sub: string }, signOptions?: { expiresIn: string }) {
     return this.jwtService.sign(payload);
+  }
+
+  async verifyToken(token: string) {
+    try {
+      return this.jwtService.verify(token);
+    } catch (error) {
+      throw new UnauthorizedException('Invalid or expired token');
+    }
   }
 }
