@@ -4,6 +4,7 @@ import { envConfig } from './config/envConfig';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  console.log(envConfig.isDev);
   app.setGlobalPrefix("api")
   app.enableCors({ origin: envConfig.isDev ? 'http://localhost:3000/' : "https://tiffin-box.netlify.app/" })
   await app.listen(envConfig.port);
