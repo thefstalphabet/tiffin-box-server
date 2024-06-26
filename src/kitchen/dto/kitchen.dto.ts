@@ -21,7 +21,7 @@ export class CreateKitchenDto {
     readonly address: string
 
     @IsNotEmpty()
-    readonly vegan: boolean
+    readonly vegan: VeganType
 
     @IsNotEmpty()
     readonly minOrderPrice: number
@@ -52,7 +52,7 @@ export class UpdateKitchenDto {
 
     readonly address: string
 
-    readonly vegan: boolean
+    readonly vegan: VeganType
 
     readonly minOrderPrice: number
 
