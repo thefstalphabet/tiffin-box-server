@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { User } from './entities/user.entity'; // Assuming you have a User entity
 import { CreateUserDto, UpdateUserDto } from './dto/user.dto'; // Assuming you have a CreateUserDto
 import { idGenerator } from 'src/helper/idGenerator';
+import { StatusType } from 'src/kitchen/dto/kitchen.dto';
 
 @Injectable()
 export class UserService {
@@ -21,7 +22,7 @@ export class UserService {
       }
       const payload = {
         _id: idGenerator("USE"),
-        active: true,
+        status: StatusType.ACTIVE,
         ...createUserDto,
       }
       const user = this.userRepository.create(payload);

@@ -1,4 +1,5 @@
 import { Address } from 'src/address/entities/address.entity';
+import { StatusType } from 'src/kitchen/dto/kitchen.dto';
 import { Entity, Column, ObjectIdColumn } from 'typeorm';
 
 @Entity()
@@ -30,6 +31,9 @@ export class User {
     @Column()
     addresses: Address[]
 
-    @Column()
-    active: boolean
+    @Column({
+        type: 'enum',
+        enum: StatusType,
+    })
+    status: StatusType;
 }

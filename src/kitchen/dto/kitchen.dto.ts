@@ -65,3 +65,10 @@ export class UpdateKitchenDto {
 
     readonly closingTime: Date
 }
+
+export enum StatusType {
+    INACTIVE, ACTIVE
+}
+export enum VeganType {
+    NO, YES
+}

@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateKitchenDto, UpdateKitchenDto } from './dto/kitchen.dto';
+import { CreateKitchenDto, StatusType, UpdateKitchenDto } from './dto/kitchen.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Kitchen } from './entities/kitchen.entity';
@@ -22,7 +22,7 @@ export class KitchenService {
       }
       const kitchen = this.kitchenRepository.create({
         _id: idGenerator("KIT"),
-        active: true,
+        status: StatusType.ACTIVE,
         rating: 0,
         ...createKitchenDto,
       });

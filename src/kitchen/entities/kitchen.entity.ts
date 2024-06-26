@@ -1,4 +1,5 @@
 import { Entity, Column, ObjectIdColumn } from 'typeorm';
+import { StatusType, VeganType } from '../dto/kitchen.dto';
 
 @Entity()
 export class Kitchen {
@@ -26,11 +27,17 @@ export class Kitchen {
     @Column({ nullable: false })
     address: string;
 
-    @Column({ nullable: false })
-    vegan: boolean
+    @Column({
+        type: 'enum',
+        enum: VeganType,
+    })
+    vegan: VeganType;
 
-    @Column({ nullable: false })
-    active: boolean
+    @Column({
+        type: 'enum',
+        enum: StatusType,
+    })
+    status: StatusType;
 
     @Column({ nullable: false })
     minOrderPrice: number
