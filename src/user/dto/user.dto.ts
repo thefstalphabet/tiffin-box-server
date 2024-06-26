@@ -12,12 +12,8 @@ export class CreateUserDto {
     readonly name: string;
 
     readonly dateOfBirth: Date;
-
+    
     readonly phoneNumber: string
-
-    readonly city: string
-
-    readonly address: string
 }
 
 export class UpdateUserDto {
@@ -30,8 +26,4 @@ export class UpdateUserDto {
     readonly dateOfBirth: Date;
 
     readonly phoneNumber: string
-
-    readonly city: string
-
-    readonly address: string
 }

@@ -1,3 +1,4 @@
+import { Address } from 'src/address/entities/address.entity';
 import { Entity, Column, ObjectIdColumn } from 'typeorm';
 
 @Entity()
@@ -19,12 +20,15 @@ export class User {
 
     @Column()
     phoneNumber: string;
-    
-    @Column()
-    city: string;
+
+    // @Column()
+    // city: string;
+
+    // @Column()
+    // address: string;
 
     @Column()
-    address: string;
+    addresses: Address[]
 
     @Column()
     active: boolean

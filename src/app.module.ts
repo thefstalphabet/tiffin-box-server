@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { KitchenModule } from './kitchen/kitchen.module';
 import { envConfig } from './config/envConfig';
+import { AddressModule } from './address/address.module';
 
 @Module({
   imports: [
@@ -19,7 +20,8 @@ import { envConfig } from './config/envConfig';
     }),
     UserModule,
     AuthModule,
-    KitchenModule
+    KitchenModule,
+    AddressModule
   ],
   controllers: [AppController],
   providers: [{
