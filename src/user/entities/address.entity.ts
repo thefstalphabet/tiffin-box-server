@@ -1,12 +1,12 @@
 import { User } from 'src/user/entities/user.entity';
-import { Entity, Column, ObjectIdColumn } from 'typeorm';
+import { Entity, Column, ObjectIdColumn, ManyToOne } from 'typeorm';
 
 @Entity()
 export class Address {
     @ObjectIdColumn()
     _id: string;
 
-    @Column({ nullable: false })
+    @Column()
     user: User;
 
     @Column({ nullable: false })

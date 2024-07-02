@@ -6,10 +6,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { KitchenModule } from './kitchen/kitchen.module';
 import { envConfig } from './config/envConfig';
-import { AddressModule } from './address/address.module';
+import { JwtModule } from '@nestjs/jwt';
+import { jwtConfig } from './config/jwtConfig';
+import { TokenModule } from './token/token.module';
 
 @Module({
   imports: [
+    JwtModule.register(jwtConfig),
     TypeOrmModule.forRoot({
       type: 'mongodb',
       url: envConfig.dbConnectionString,
@@ -21,7 +24,7 @@ import { AddressModule } from './address/address.module';
     UserModule,
     AuthModule,
     KitchenModule,
-    AddressModule
+    TokenModule
   ],
   controllers: [AppController],
   providers: [{

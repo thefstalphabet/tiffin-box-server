@@ -8,8 +8,3 @@ export class LoginDto {
   @IsNotEmpty()
   readonly password: string;
 }
-
-export class RefreshTokenDto {
-  @IsString()
-  refreshToken: string;
-}

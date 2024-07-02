@@ -1,6 +1,6 @@
-import { Address } from 'src/address/entities/address.entity';
 import { StatusType } from 'src/kitchen/dto/kitchen.dto';
-import { Entity, Column, ObjectIdColumn } from 'typeorm';
+import { Entity, Column, ObjectIdColumn, OneToMany } from 'typeorm';
+import { Address } from './address.entity';
 
 @Entity()
 export class User {
@@ -22,14 +22,8 @@ export class User {
     @Column()
     phoneNumber: string;
 
-    // @Column()
-    // city: string;
-
-    // @Column()
-    // address: string;
-
     @Column()
-    addresses: Address[]
+    addresses: Address[];
 
     @Column({
         type: 'enum',

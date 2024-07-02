@@ -1,17 +1,19 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { v4 as uuidv4 } from 'uuid';
 import { User } from './entities/user.entity'; // Assuming you have a User entity
 import { CreateUserDto, UpdateUserDto } from './dto/user.dto'; // Assuming you have a CreateUserDto
 import { idGenerator } from 'src/helper/idGenerator';
 import { StatusType } from 'src/kitchen/dto/kitchen.dto';
-
+import { Address } from './entities/address.entity';
+import { CreateAddressDto, UpdateAddressDto } from './dto/address.dto';
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    @InjectRepository(Address)
+    private addressRepository: Repository<Address>,
   ) { }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
@@ -20,13 +22,13 @@ export class UserService {
       if (existingUser) {
         throw new BadRequestException('User with this email already exists.');
       }
-      const payload = {
+      const payload: User = {
         _id: idGenerator("USE"),
         status: StatusType.ACTIVE,
+        addresses: [],
         ...createUserDto,
       }
       const user = this.userRepository.create(payload);
-
       return await this.userRepository.save(user);
     } catch (error) {
       throw new BadRequestException('Could not create user.', error.message);
@@ -76,6 +78,58 @@ export class UserService {
       return true
     } catch (error) {
       throw new BadRequestException('Could not find User.', error.message);
+    }
+  }
+
+  async createAddress(createAddressDto: CreateAddressDto, userId: string): Promise<Address> {
+    try {
+      let existingUser = await this.findOne(userId);
+      const payload = {
+        _id: idGenerator("ADD"),
+        user: existingUser,
+        ...createAddressDto,
+      }
+      const address = this.addressRepository.create(payload);
+      await this.addressRepository.save(address);
+
+      await this.userRepository.update({ _id: userId }, { addresses: [...existingUser.addresses, address] })
+      return address
+    } catch (error) {
+      throw new BadRequestException('Could not create user address.', error.message);
+    }
+  }
+
+  async findAddresses(userId: string): Promise<Address[]> {
+    const addresses = await this.addressRepository.find();
+    return addresses
+  }
+
+  async updateAddress(addressId: string, updateData: UpdateAddressDto): Promise<boolean> {
+    try {
+      const address = await this.addressRepository.findOneBy({ _id: addressId });
+      if (!address) throw new Error('Address not found');
+
+      await this.addressRepository.update({ _id: addressId }, updateData)
+      return true
+    } catch (error) {
+      throw new BadRequestException('Could not find user address.', error.message);
+    }
+  }
+
+  async deleteUserAddress(userId: string, addressId: string): Promise<boolean> {
+    try {
+      const address = await this.addressRepository.findOneBy({ _id: addressId });
+      if (!address) throw new Error('Address not found');
+
+      await this.addressRepository.delete({ _id: addressId });
+      const user = await this.userRepository.findOneBy({ _id: userId });
+      if (user) {
+        let addresses = user.addresses.filter(address => address?._id !== addressId);
+        await this.userRepository.update({ _id: userId }, { addresses: addresses });
+      }
+      return true
+    } catch (error) {
+      throw new BadRequestException('Could not find user address.', error.message);
     }
   }
 }
