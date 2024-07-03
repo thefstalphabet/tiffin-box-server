@@ -23,7 +23,7 @@ export class User {
     phoneNumber: string;
 
     @Column()
-    addresses: Address[];
+    addressIds: string[];
 
     @Column({
         type: 'enum',

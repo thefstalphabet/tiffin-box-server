@@ -25,7 +25,7 @@ export class UserService {
       const payload: User = {
         _id: idGenerator("USE"),
         status: StatusType.ACTIVE,
-        addresses: [],
+        addressIds: [],
         ...createUserDto,
       }
       const user = this.userRepository.create(payload);
@@ -86,13 +86,13 @@ export class UserService {
       let existingUser = await this.findOne(userId);
       const payload = {
         _id: idGenerator("ADD"),
-        user: existingUser,
+        userId: userId,
         ...createAddressDto,
       }
       const address = this.addressRepository.create(payload);
       await this.addressRepository.save(address);
 
-      await this.userRepository.update({ _id: userId }, { addresses: [...existingUser.addresses, address] })
+      await this.userRepository.update({ _id: userId }, { addressIds: [...existingUser.addressIds, address?._id] })
       return address
     } catch (error) {
       throw new BadRequestException('Could not create user address.', error.message);
@@ -100,7 +100,7 @@ export class UserService {
   }
 
   async findAddresses(userId: string): Promise<Address[]> {
-    const addresses = await this.addressRepository.find();
+    const addresses = await this.addressRepository.find({where: {userId: userId}});
     return addresses
   }
 
@@ -124,8 +124,8 @@ export class UserService {
       await this.addressRepository.delete({ _id: addressId });
       const user = await this.userRepository.findOneBy({ _id: userId });
       if (user) {
-        let addresses = user.addresses.filter(address => address?._id !== addressId);
-        await this.userRepository.update({ _id: userId }, { addresses: addresses });
+        let ids = user.addressIds.filter(ids => ids !== addressId);
+        await this.userRepository.update({ _id: userId }, { addressIds: ids });
       }
       return true
     } catch (error) {
