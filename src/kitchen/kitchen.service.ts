@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateKitchenDto, StatusType, UpdateKitchenDto } from './dto/kitchen.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { MongoRepository } from 'typeorm';
 import { Kitchen } from './entities/kitchen.entity';
 import { idGenerator } from 'src/helper/idGenerator';
 import { regexGenerator } from 'src/helper/regexGenerator';
@@ -11,7 +11,7 @@ export class KitchenService {
 
   constructor(
     @InjectRepository(Kitchen)
-    private readonly kitchenRepository: Repository<Kitchen>,
+    private readonly kitchenRepository: MongoRepository<Kitchen>,
   ) { }
 
   async create(createKitchenDto: CreateKitchenDto): Promise<Kitchen> {

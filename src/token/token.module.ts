@@ -6,10 +6,12 @@ import { UserService } from 'src/user/user.service';
 import { User } from 'src/user/entities/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Address } from 'src/user/entities/address.entity';
+import { Kitchen } from 'src/kitchen/entities/kitchen.entity';
+import { KitchenService } from 'src/kitchen/kitchen.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Address])],
+  imports: [TypeOrmModule.forFeature([User, Address, Kitchen])],
   controllers: [TokenController],
-  providers: [TokenService, JwtService, UserService]
+  providers: [TokenService, JwtService, UserService, KitchenService]
 })
 export class TokenModule { }

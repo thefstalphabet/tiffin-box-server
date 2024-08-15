@@ -1,19 +1,24 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, MongoRepository, Repository } from 'typeorm';
 import { User } from './entities/user.entity'; // Assuming you have a User entity
 import { CreateUserDto, UpdateUserDto } from './dto/user.dto'; // Assuming you have a CreateUserDto
 import { idGenerator } from 'src/helper/idGenerator';
 import { StatusType } from 'src/kitchen/dto/kitchen.dto';
 import { Address } from './entities/address.entity';
 import { CreateAddressDto, UpdateAddressDto } from './dto/address.dto';
+import { KitchenService } from 'src/kitchen/kitchen.service';
+import { Kitchen } from 'src/kitchen/entities/kitchen.entity';
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    private readonly userRepository: MongoRepository<User>,
     @InjectRepository(Address)
-    private addressRepository: Repository<Address>,
+    private addressRepository: MongoRepository<Address>,
+    private readonly kitchenService: KitchenService,
+    @InjectRepository(Kitchen)
+    private kitchenRepository: MongoRepository<Kitchen>,
   ) { }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
@@ -26,6 +31,8 @@ export class UserService {
         _id: idGenerator("USE"),
         status: StatusType.ACTIVE,
         addressIds: [],
+        bookmarkedKitchensIds: [],
+        bookmarkedDishesIds: [],
         ...createUserDto,
       }
       const user = this.userRepository.create(payload);
@@ -36,7 +43,7 @@ export class UserService {
   }
 
   async findAll(): Promise<User[]> {
-    const [users, count] = await this.userRepository.findAndCount();
+    const users = await this.userRepository.find();
     return users
   }
 
@@ -100,7 +107,7 @@ export class UserService {
   }
 
   async findAddresses(userId: string): Promise<Address[]> {
-    const addresses = await this.addressRepository.find({where: {userId: userId}});
+    const addresses = await this.addressRepository.find({ where: { userId: userId } });
     return addresses
   }
 
@@ -130,6 +137,55 @@ export class UserService {
       return true
     } catch (error) {
       throw new BadRequestException('Could not find user address.', error.message);
+    }
+  }
+
+  async bookmark(type: "kitchen" | "dish", id: string, userId: string) {
+    const user = await this.findOne(userId);
+    switch (type) {
+      case "kitchen":
+        await this.kitchenService.findOne(id)
+        await this.userRepository.update({ _id: userId }, { bookmarkedKitchensIds: [...user?.bookmarkedKitchensIds, id] })
+        return true;
+      case "dish":
+        // do for dish
+        break;
+      default:
+        throw new BadRequestException('Bookmark type is not supported!')
+    }
+  }
+
+  async unBookmark(type: "kitchen" | "dish", id: string, userId: string) {
+    const user = await this.findOne(userId);
+    switch (type) {
+      case "kitchen":
+        await this.kitchenService.findOne(id)
+        const newBookmarksIds = user?.bookmarkedKitchensIds.filter(bookmarkId => bookmarkId !== id)
+        await this.userRepository.update({ _id: userId }, { bookmarkedKitchensIds: newBookmarksIds })
+        break;
+      case "dish":
+        // do for dish
+        break;
+      default:
+        throw new BadRequestException('Bookmark type is not supported!')
+    }
+  }
+
+  async getBookmark(type: "kitchen" | "dish", userId: string) {
+    const user = await this.findOne(userId);
+    switch (type) {
+      case "kitchen":
+        const kitchens = await this.kitchenRepository.find({
+          where: {
+            _id: {$in:user.bookmarkedKitchensIds}
+          }
+        })
+      return kitchens
+      case "dish":
+        // do for dish
+        break;
+      default:
+        throw new BadRequestException('Bookmark type is not supported!')
     }
   }
 }

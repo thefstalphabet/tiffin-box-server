@@ -24,6 +24,12 @@ export class User {
 
     @Column()
     addressIds: string[];
+    
+    @Column()
+    bookmarkedKitchensIds: string[]
+    
+    @Column()
+    bookmarkedDishesIds: string[]
 
     @Column({
         type: 'enum',

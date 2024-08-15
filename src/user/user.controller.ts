@@ -10,6 +10,24 @@ import { AuthGuard } from 'src/auth/auth.gaurd';
 export class UserController {
   constructor(private readonly userService: UserService) { }
 
+  @Get('bookmark/:type')
+  @UseGuards(AuthGuard)
+  async getBookmarks(@Param('type') type: "kitchen" | "dish", @Req() req: any) {
+    return this.userService.getBookmark(type, req?.user?.id);
+  }
+
+  @Post('unbookmark/:type/:id')
+  @UseGuards(AuthGuard)
+  async unBookmark(@Param('type') type: "kitchen" | "dish", @Param('id') id: string, @Req() req: any) {
+    return this.userService.unBookmark(type, id, req?.user?.id);
+  }
+
+  @Post('bookmark/:type/:id')
+  @UseGuards(AuthGuard)
+  async bookmark(@Param('type') type: "kitchen" | "dish", @Param('id') id: string, @Req() req: any) {
+    return this.userService.bookmark(type, id, req?.user?.id);
+  }
+
   @Patch('address/:id')
   @UseGuards(AuthGuard)
   async updateAddress(@Param('id') addressId: string, @Body() updateData: UpdateAddressDto): Promise<boolean> {
