@@ -22,7 +22,6 @@ export class KitchenService {
       }
       const kitchen = this.kitchenRepository.create({
         _id: idGenerator("KIT"),
-        status: StatusType.ACTIVE,
         rating: 0,
         ...createKitchenDto,
       });

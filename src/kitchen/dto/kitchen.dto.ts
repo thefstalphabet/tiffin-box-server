@@ -26,6 +26,9 @@ export class CreateKitchenDto {
     @IsNotEmpty()
     readonly minOrderPrice: number
 
+    @IsNotEmpty()
+    readonly status: StatusType
+
     // readonly review: any
 
     // @IsNotEmpty()
@@ -60,6 +63,8 @@ export class UpdateKitchenDto {
 
     // @IsNotEmpty()
     // readonly dishes: any
+
+    readonly status: StatusType;
 
     readonly openingTime: Date
 

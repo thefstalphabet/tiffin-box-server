@@ -1,4 +1,5 @@
 import { IsEmail, IsNotEmpty } from 'class-validator';
+import { StatusType } from 'src/kitchen/dto/kitchen.dto';
 
 export class CreateUserDto {
     @IsEmail()
@@ -14,6 +15,9 @@ export class CreateUserDto {
     readonly dateOfBirth: Date;
     
     readonly phoneNumber: string
+
+    @IsNotEmpty()
+    readonly status: StatusType;
 }
 
 export class UpdateUserDto {
@@ -26,4 +30,6 @@ export class UpdateUserDto {
     readonly dateOfBirth: Date;
 
     readonly phoneNumber: string
+
+    readonly status: StatusType;
 }

@@ -29,7 +29,6 @@ export class UserService {
       }
       const payload: User = {
         _id: idGenerator("USE"),
-        status: StatusType.ACTIVE,
         addressIds: [],
         bookmarkedKitchensIds: [],
         bookmarkedDishesIds: [],
@@ -162,13 +161,14 @@ export class UserService {
         await this.kitchenService.findOne(id)
         const newBookmarksIds = user?.bookmarkedKitchensIds.filter(bookmarkId => bookmarkId !== id)
         await this.userRepository.update({ _id: userId }, { bookmarkedKitchensIds: newBookmarksIds })
-        break;
+        return true
       case "dish":
         // do for dish
         break;
       default:
         throw new BadRequestException('Bookmark type is not supported!')
     }
+    return false
   }
 
   async getBookmark(type: "kitchen" | "dish", userId: string) {
